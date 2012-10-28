@@ -16,18 +16,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 
 public class SearchActivity extends Activity {
-//	@Override
-//	public void onCreate(Bundle savedInstanceState) {
-//	    super.onCreate(savedInstanceState);
-//	    setContentView(R.xml.searchable);
-//
-//	    // Get the intent, verify the action and get the query
-//	    Intent intent = getIntent();
-//	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-//	      String query = intent.getStringExtra(SearchManager.QUERY);
-//	      //doMySearch(query);
-//	    }
-//	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
