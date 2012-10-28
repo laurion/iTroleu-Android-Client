@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.maps.MapView
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <com.google.android.maps.MapView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mapview"
     android:layout_width="fill_parent"
@@ -7,6 +11,15 @@
     android:clickable="true"
     android:apiKey="0RxFm_j1X0qNXnxLKtxP2PPH-oLW5pKAB6h42FA"
 />
+    <Button android:id="@+id/googlemaps_select_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="Search"
+            android:onClick="searchAddress"/>
+</RelativeLayout>
+
 <!-- <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
 <!--     xmlns:tools="http://schemas.android.com/tools" -->
 <!--     android:layout_width="match_parent" -->

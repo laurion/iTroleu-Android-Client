@@ -1,6 +1,8 @@
 package com.hackover.itroleu_android_client;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -9,11 +11,14 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,20 +27,31 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 public class MainActivity extends MapActivity implements LocationListener {
 	
 	private EditText			txted			= null;
 	
-	private Button				btnSimple		= null;
+	private Button				searchButton	= null;
 	
 	private Drawable			defaultMarker	= null;
 	
 	private GeoPoint			point			= null;
 
 	private MapView 			mapView   		= null;
+
+	private MyItemizedOverlay 	itemizedoverlay;
+
+	private List<Overlay> 		mapOverlays;
+
+	private LinearLayout layout;
 	
 //	private MyLocationOverlay 	me				= null;
 	
@@ -44,22 +60,33 @@ public class MainActivity extends MapActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mapView = (MapView) findViewById(R.id.mapview);
-        
+//        searchButton = (Button) findViewById(R.id.search);
+//        searchButton.setOnClickListener(this);
+             
         mapView.setBuiltInZoomControls(true);
 //        mapView.setSatellite(true);
         mapView.getController().setCenter(new GeoPoint(44432636, 26103837));
         mapView.getController().setZoom(17);
         
+        //overlays
+        mapOverlays = mapView.getOverlays();
+        Drawable drawable = this.getResources().getDrawable(R.drawable.start_marker);
+        itemizedoverlay = new MyItemizedOverlay(drawable, this);
+        
+//        layout = (LinearLayout) View.inflate(this, R.layout.search_button, null);
+//        searchButton = new Button(this);
+//        searchButton.setText("Search");
+//        searchButton.setLayoutParams(new LayoutParams(
+//            ViewGroup.LayoutParams.WRAP_CONTENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT));
+//        layout.addView(mapView);
+//        layout.addView(searchButton);
+//        setContentView(layout);
+
     	// Add a location mark
 //		MyLocationOverlay myLocationOverlay = new MyLocationOverlay();
 //		List<Overlay> list = mapView.getOverlays();
 //		list.add(myLocationOverlay);
-        
-//        /* Use the LocationManager class to obtain GPS locations */
-//
-//        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-//        LocationListener mlocListener = new MyLocationListener();
-//        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
         
         // Getting locationManager and reflecting changes over map if distance travel by
  		// user is greater than 500m from current location.
@@ -69,6 +96,13 @@ public class MainActivity extends MapActivity implements LocationListener {
  		
 // 		mapView.invalidate();
     }
+    
+    /** Called when the user touches the button */
+    public void searchAddress(View v) {
+        // Do something in response to button click
+    	 onSearchRequested();
+    }
+
     
 //    @Override
 //    public void onResume() {
@@ -99,13 +133,11 @@ public class MainActivity extends MapActivity implements LocationListener {
 //			txted.setText(currentLocation);
 			point = new GeoPoint((int)(lat * 1000000), (int)(lng * 1000000));
 			mapView.getController().animateTo(point);
-			List<Overlay> mapOverlays = mapView.getOverlays();
-	        Drawable drawable = this.getResources().getDrawable(R.drawable.marker);
-	        MyItemizedOverlay itemizedoverlay = new MyItemizedOverlay(drawable, this);
 	        
-	        OverlayItem overlayitem = new OverlayItem(point, "Your Location", "");
+	        OverlayItem overlayitem = new OverlayItem(point, "Your Location", null);
 	        itemizedoverlay.addOverlay(overlayitem);
 	        mapOverlays.add(itemizedoverlay);
+//	        mapView.invalidate();
 		}
 	}
 	
